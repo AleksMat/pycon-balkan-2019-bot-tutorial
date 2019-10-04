@@ -29,7 +29,7 @@ async def on_issue_opened(
 @process_webhook_payload
 async def on_pr_merged(
         *,
-        action, pull_request
+        action, pull_request, **kwargs
 ):
     """Whenever a PR is closed say thanks"""
     github_api = RUNTIME_CONTEXT.app_installation_client
