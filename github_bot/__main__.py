@@ -24,6 +24,24 @@ async def on_issue_opened(
 
     await github_api.post(comments_api_url, data={"body": message})
 
+
+@process_event_actions('pull_request', {'closed'})
+@process_webhook_payload
+async def on_pr_merged(
+        *,
+        action, pull_request
+):
+    """Whenever a PR is closed say thanks"""
+    github_api = RUNTIME_CONTEXT.app_installation_client
+
+    comments_api_url = pull_request["comments_url"]
+
+    author =  pull_request["user"]["login"]
+    message = f"Thanks for contribution @{author}!"
+
+    await github_api.post(comments_api_url, data={"body": message})
+
+
 if __name__ == "__main__":
     run_app(
         name='pycon-balkan-aleksmat-bot',
